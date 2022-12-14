@@ -2,34 +2,58 @@
 
 #include <SFML/Graphics.hpp>
 
-class Pokeball {
+class kulka {
 private:
 	sf::Vector2f position;
-	float xVel = 1;
-	float yVel = 1;
+	float predkoscKulki{ 0.08f };
+
+	sf::Vector2f predkosc{predkoscKulki, predkoscKulki};
 
 	sf::Texture tekstura;
 	sf::Sprite pSprite;
 
 public:
-	Pokeball(float x_in, float y_in) {
+	kulka(float x_in, float y_in) {
 		position.x = x_in;
 		position.y = y_in;
-		tekstura.loadFromFile("pokeball.png");
+		tekstura.loadFromFile("ball.png");
 		pSprite.setTexture(tekstura);
 		pSprite.setPosition(position);
+		printf("%lf", position.x);
 	}
 
-	void przesun(float x_in, float y_in) {
-		sf::Vector2f pos;
-		pos.x = x_in;
-		pos.y = y_in;
-		pSprite.move(pos);
-		position = pSprite.getPosition();
+	void przesun() {
+		pSprite.move(this->predkosc);
+
+		if (this->left() < 0) {
+			predkosc.x = predkoscKulki;
+		}
+		else if (this->right() > 800) {
+			predkosc.x = -predkoscKulki;
+		}
+		if (this->top() < 0) {
+			predkosc.y = predkoscKulki;
+		}
+		else if (this->bottom() > 800) {
+			predkosc.y = -predkoscKulki;
+		}
 	}
 
-	sf::Sprite pobierzPokeball() {
+	sf::Sprite pobierzKulke() {
 		return pSprite;
+	}
+
+	float left() {
+		return this->position.x - 50;
+	}
+	float right() {
+		return this->position.x + 50;
+	}
+	float top() {
+		return this->position.y - 50;
+	}
+	float bottom() {
+		return this->position.y + 50;
 	}
 
 };
@@ -40,7 +64,7 @@ int main()
 	sf::RenderWindow window(sf::VideoMode(800, 800), "projekt sfml");
 	sf::Event event;
 
-	Pokeball pb(50, 50);
+	kulka pb(100, 50);
 
 	sf::Clock zegar;
 	while (window.isOpen())
@@ -51,15 +75,11 @@ int main()
 			if (event.type == sf::Event::Closed)
 				window.close();
 		}
+		pb.przesun();
+
 		window.clear(sf::Color::White);
-		window.draw(pb.pobierzPokeball());
+		window.draw(pb.pobierzKulke());
 		window.display();
-
-		if (zegar.getElapsedTime().asMilliseconds() > 5.0f) {
-			pb.przesun(1, 1);
-			zegar.restart();
-		}
-
 
 	}
 	return 0;
