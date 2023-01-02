@@ -109,7 +109,43 @@ public:
 	void przesun(float x_in, float y_in);
 	sf::CircleShape getPilka() { return ball; }
 	sf::Vector2f getPosPilka() { return ball.getPosition(); }
+	sf::Vector2f velocity{ 2.0f, 2.8f };
+	const float ballVelocityX{ 2.0f };
+	const float ballVelocityY{ 2.8f };
+	void kolizjaSciany();
+	
+	void moveUp();
+	void moveDown();
+	void moveLeft();
+	void moveRight();
 };
+
+void pilka::moveUp() {
+	this->velocity.y = -ballVelocityY;
+}
+
+void pilka::moveDown() {
+	this->velocity.y = ballVelocityY;
+}
+
+void pilka::moveLeft() {
+	this->velocity.x = -ballVelocityX;
+}
+
+void pilka::moveRight() {
+	this->velocity.x = ballVelocityX;
+}
+
+void pilka::kolizjaSciany() {
+	if (getPosPilka().x + 40 > 800)// kolizja sciany boczne
+		moveLeft();
+	if (getPosPilka().x < 0)// kolizja sciany boczne
+		moveRight();
+	if (getPosPilka().y < 0)// kolizja sciany gorna i dolna
+		moveDown();
+	if (getPosPilka().y + 40 > 800)// kolizja sciany gorna i dolna
+		moveUp();
+}
 
 pilka::pilka(float x_in, float y_in)
 {
@@ -129,12 +165,32 @@ void pilka::przesun(float x_in, float y_in)
 }
 
 
+
+//template <class T1, class T2> bool czyPrzecina(T1& A, T2& B) {
+//	return A.right() >= B.left() && A.left() <= B.right()
+//		&& A.bottom() >= B.top() && A.top() <= B.bottom();
+//}
+//
+//bool testKolizji(paletka& paletka, pilka& pilka) {
+//	if (!czyPrzecina(paletka, pilka)) return false;
+//
+//	pilka.moveUp();
+//
+//	if (pilka.getPosPilka().x < paletka.getPosPaletka().x) {
+//		pilka.moveLeft();
+//	}
+//	if (pilka.getPosPilka().x > paletka.getPosPaletka().x) {
+//		pilka.moveRight();
+//	}
+//}
+
+
+
 int main()
 {
 	sf::RenderWindow window(sf::VideoMode(800, 800), "projekt sfml");
 	pilka p1(0,50);
 	paletka p2(350, 750);
-	float dx = 2, dy = 2.8;
 	sf::Clock zegar;
 	while (window.isOpen())
 	{
@@ -149,11 +205,10 @@ int main()
 
 		if (zegar.getElapsedTime().asMilliseconds() > 10.0f) {
 
-			if (p1.getPosPilka().x+40 > window.getSize().x || p1.getPosPilka().x < 0)// kolizja sciany boczne
-				dx = -dx;
-			if (p1.getPosPilka().y+40 > window.getSize().y || p1.getPosPilka().y < 0)// kolizja sciany gorna i dolna
-				dy = -dy;
-			p1.przesun(dx, dy);
+
+			p1.kolizjaSciany();
+			p1.przesun(p1.velocity.x, p1.velocity.y);
+			/*testKolizji(p2, p1);*/
 
 
 			if (event.type == sf::Event::KeyPressed )//detekcja klawiszy
