@@ -142,10 +142,16 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="bloki.cpp" />
+    <ClCompile Include="paletka.cpp" />
+    <ClCompile Include="pilka.cpp" />
     <ClCompile Include="Źródło.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="bloki.h" />
     <ClInclude Include="kulka.h" />
+    <ClInclude Include="paletka.h" />
+    <ClInclude Include="pilka.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
