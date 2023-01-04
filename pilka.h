@@ -20,4 +20,9 @@ public:
 	void moveDown();
 	void moveLeft();
 	void moveRight();
+
+	float left();
+	float right();
+	float top();
+	float bottom();
 };

@@ -5,6 +5,7 @@ class bloki {
 public:
 	bloki(float x_in, float y_in);
 	sf::Vector2f getPosBlok() { return blok.getPosition(); }
+	sf::RectangleShape getBlok() { return blok; }
 	float left();
 	float right();
 	float top();
