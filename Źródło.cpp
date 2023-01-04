@@ -72,7 +72,11 @@ int main()
 
 			p1.kolizjaSciany();
 			p1.przesun(p1.velocity.x, p1.velocity.y);
-			
+
+			for (auto& bloki : Bloki) testKolizji(bloki, p1);
+
+			auto iterator = remove_if(begin(Bloki), end(Bloki), [](bloki& bloki) {return bloki.czyZniszczony(); });
+			Bloki.erase(iterator, end(Bloki));
 			
 			if ((p1.left() > p2.getPosPaletka().x - 10) && (p1.right() < p2.getPosPaletka().x + 110) &&
 				(p1.bottom()  > p2.getPosPaletka().y) && (p1.bottom() < p2.getPosPaletka().y + 10)) { //detekcja kolizji pilki i paletki
@@ -90,15 +94,11 @@ int main()
 			}
 
 			zegar.restart();
-			printf("rozmiar okna: %d %d\n", window.getSize().x, window.getSize().y);
 			printf("x = %lf y=%lf \n\n", p1.getPosPilka().x, p1.getPosPilka().y);
 		}
 
-        for (auto& bloki : Bloki) testKolizji(bloki, p1);
 
-		auto iterator = remove_if(begin(Bloki), end(Bloki), [](bloki& bloki) {return bloki.czyZniszczony(); });
-		Bloki.erase(iterator, end(Bloki));
-
+		window.clear(sf::Color::White);
 		window.draw(sprite);
 		window.draw(p1.getPilka());
 		window.draw(p2.getPaletka());
