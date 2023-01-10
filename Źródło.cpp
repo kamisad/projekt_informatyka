@@ -3,6 +3,8 @@
 #include "pilka.h"
 #include "bloki.h"
 #include <vector>
+#include <stdlib.h>
+#include <stdio.h>
 using namespace sf;
 using namespace std;
 
@@ -14,21 +16,25 @@ void testKolizji(bloki& bloki, pilka& pilka) {
 		(pilka.bottom() > bloki.top()) && (pilka.bottom() < bloki.top()+10)) { //detekcja kolizji pilki i bloku
 		pilka.moveUp();
 		bloki.zniszcz();
+		pilka.trafiony();
 	}
 	if ((pilka.left() > bloki.left() - 10) && (pilka.right() < bloki.right() + 10) &&
 		(pilka.top() > bloki.bottom() - 10 ) && (pilka.top() < bloki.bottom())) { //detekcja kolizji pilki i bloku
 		pilka.moveDown();
 		bloki.zniszcz();
+		pilka.trafiony();
 	}
 	if ((pilka.right() > bloki.left()) && (pilka.right() < bloki.left() + 5) &&
 		(pilka.top() > bloki.top() - 10) && (pilka.bottom() < bloki.bottom() + 10)) { //detekcja kolizji pilki i bloku
 		pilka.moveLeft();
 		bloki.zniszcz();
+		pilka.trafiony();
 	}
 	if ((pilka.left() > bloki.right() - 5) && (pilka.left() < bloki.right()) && 
 		(pilka.top() > bloki.top() - 10) && (pilka.bottom() < bloki.bottom() + 10)) { //detekcja kolizji pilki i bloku
 		pilka.moveRight();
 		bloki.zniszcz();
+		pilka.trafiony();
 	}
 
 }
@@ -47,6 +53,8 @@ int main()
 	sprite.setOrigin(size.x / 2, size.y / 2);
 	sprite.setPosition(400, 400);
 	sprite.setScale(sf::Vector2f(0.25f, 0.25f));
+
+
 
 	vector<bloki> Bloki;
 
@@ -68,7 +76,6 @@ int main()
 		}
 
 		if (zegar.getElapsedTime().asMilliseconds() > 3.0f) {
-
 
 			p1.kolizjaSciany();
 			p1.przesun(p1.velocity.x, p1.velocity.y);
@@ -102,6 +109,11 @@ int main()
 		window.draw(sprite);
 		window.draw(p1.getPilka());
 		window.draw(p2.getPaletka());
+		window.draw(p1.getTekst1());
+		if (p1.getZycia() == 0) {
+			p1.koniecGry();
+			window.draw(p1.getTekst2());
+		}
 
 		for (auto& bloki : Bloki) {
 			window.draw(bloki.getBlok());

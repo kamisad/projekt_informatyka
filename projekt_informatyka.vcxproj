@@ -149,7 +149,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="bloki.h" />
-    <ClInclude Include="kulka.h" />
     <ClInclude Include="paletka.h" />
     <ClInclude Include="pilka.h" />
   </ItemGroup>

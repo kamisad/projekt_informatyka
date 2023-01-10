@@ -1,5 +1,6 @@
 #include "pilka.h"
 #include <SFML/Graphics.hpp>
+#include <sstream>
 
 float pilka::left() {
 	return this->ball.getPosition().x;
@@ -34,14 +35,16 @@ void pilka::moveRight() {
 }
 
 void pilka::kolizjaSciany() {
-	if (getPosPilka().x + 20 > 800)// kolizja sciany boczne
+	if (getPosPilka().x + 20 > 800)// kolizja sciany prawej
 		moveLeft();
-	if (getPosPilka().x < 0)// kolizja sciany boczne
+	if (getPosPilka().x < 0)// kolizja sciany lewej
 		moveRight();
-	if (getPosPilka().y < 0)// kolizja sciany gorna i dolna
+	if (getPosPilka().y < 0)// kolizja sciany gornej
 		moveDown();
-	if (getPosPilka().y + 20 > 800)// kolizja sciany gorna i dolna
+	if (getPosPilka().y + 20 > 800) {// kolizja sciany dolnej
 		moveUp();
+		kolizja();
+	}
 }
 
 pilka::pilka(float x_in, float y_in)
@@ -51,6 +54,24 @@ pilka::pilka(float x_in, float y_in)
 	ball.setRadius(10);
 	ball.setFillColor(sf::Color::Red);
 	ball.setPosition(position);
+
+	czcionka.loadFromFile("arial.ttf");
+	tekst1.setFont(czcionka);
+	tekst1.setCharacterSize(20);
+	tekst1.setFillColor(sf::Color::Green);
+	tekst1.setPosition(30, 30);
+	std::stringstream ss; 
+	ss << "Punkty: " << punkty << "\n" << "zycia: " << zycia;
+	tekst1.setString(ss.str().c_str());
+
+	tekst2.setFont(czcionka);
+	tekst2.setCharacterSize(40);
+	tekst2.setFillColor(sf::Color::Red);
+	tekst2.setPosition(300, 400);
+	tekst2.setOutlineColor(sf::Color::Black);
+	tekst2.setOutlineThickness(10);
+	tekst2.setString("Game Over");
+	
 }
 
 void pilka::przesun(float x_in, float y_in)
@@ -59,4 +80,23 @@ void pilka::przesun(float x_in, float y_in)
 	pos.x = x_in;
 	pos.y = y_in;
 	ball.move(pos);
+}
+
+void pilka::trafiony() {
+	this->punkty = punkty + 1;
+	std::stringstream ss;
+	ss << "Punkty: " << punkty << "\n" << "zycia: " << zycia;
+	tekst1.setString(ss.str().c_str());
+}
+
+void pilka::kolizja() {
+	this->zycia = zycia - 1;
+	std::stringstream ss;
+	ss << "Punkty: " << punkty << "\n" << "zycia: " << zycia;
+	tekst1.setString(ss.str().c_str());
+}
+
+void pilka::koniecGry() {
+		this->velocity.y = 0;
+		this->velocity.x = 0;
 }
