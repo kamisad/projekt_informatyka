@@ -143,12 +143,14 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="bloki.cpp" />
+    <ClCompile Include="Menu.cpp" />
     <ClCompile Include="paletka.cpp" />
     <ClCompile Include="pilka.cpp" />
     <ClCompile Include="Źródło.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="bloki.h" />
+    <ClInclude Include="Menu.h" />
     <ClInclude Include="paletka.h" />
     <ClInclude Include="pilka.h" />
   </ItemGroup>

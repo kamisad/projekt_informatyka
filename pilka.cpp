@@ -57,9 +57,9 @@ pilka::pilka(float x_in, float y_in)
 
 	czcionka.loadFromFile("arial.ttf");
 	tekst1.setFont(czcionka);
-	tekst1.setCharacterSize(20);
+	tekst1.setCharacterSize(24);
 	tekst1.setFillColor(sf::Color::Green);
-	tekst1.setPosition(30, 30);
+	tekst1.setPosition(30, 20);
 	std::stringstream ss; 
 	ss << "Punkty: " << punkty << "\n" << "zycia: " << zycia;
 	tekst1.setString(ss.str().c_str());
