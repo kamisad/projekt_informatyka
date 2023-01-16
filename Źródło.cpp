@@ -65,7 +65,7 @@ poczatek:
 	sprite.setOrigin(size.x / 2, size.y / 2);
 	sprite.setPosition(380, 400);
 	sprite.setScale(sf::Vector2f(0.25f, 0.25f));
-
+	float paletkaV = 2;
 
 
 	vector<bloki> Bloki;
@@ -132,127 +132,19 @@ poczatek:
 										switch (trudnosc.getWybranyElement())
 										{
 
-										case 0:
+										case 0: //latwy
 
-											TRUDNOSC.close();
-											while (GRA.isOpen()) { // kod gry latwy
-												Event aevent;
-												while (GRA.pollEvent(aevent)) {
-													if (aevent.type == Event::KeyPressed) {
-														if (aevent.key.code == Keyboard::Escape) { //wyjscie z gry mozliwe tylko po wcisnieciu ESC
-															GRA.close();
-															goto poczatek;
-														}
-													}
-												}											
-												if (zegar.getElapsedTime().asMilliseconds() > 3.0f) { //klatkowanie 
-
-													p1.kolizjaSciany();
-													p1.przesun(p1.velocity.x, p1.velocity.y);
-
-													for (auto& bloki : Bloki) testKolizji(bloki, p1);
-
-													auto iterator = remove_if(begin(Bloki), end(Bloki), [](bloki& bloki) {return bloki.czyZniszczony(); }); //niszczenie bloków
-													Bloki.erase(iterator, end(Bloki));
-
-													if ((p1.left() > p2.getPosPaletka().x - 10) && (p1.right() < p2.getPosPaletka().x + 110) &&
-														(p1.bottom() > p2.getPosPaletka().y) && (p1.bottom() < p2.getPosPaletka().y + 10)) { //detekcja kolizji pilki i paletki
-														p1.moveUp();
-													}
-
-													if (aevent.type == sf::Event::KeyPressed) {//detekcja klawiszy			
-														if (aevent.key.code == sf::Keyboard::Left && p2.getPosPaletka().x > 0) {
-															p2.przesun(-2);
-														}
-														if (aevent.key.code == sf::Keyboard::Right && p2.getPosPaletka().x < 700) {
-															p2.przesun(2);
-														}
-													}
-
-													zegar.restart();
-													printf("x = %lf y=%lf \n\n", p1.getPosPilka().x, p1.getPosPilka().y);
-												}
-
-												GRA.clear(sf::Color::White);
-												GRA.draw(sprite);
-												GRA.draw(p1.getPilka());
-												GRA.draw(p2.getPaletka());
-												GRA.draw(p1.getTekst1());
-												if (p1.getZycia() == 0) {
-													p1.koniecGry();
-													GRA.draw(p1.getTekst2());
-												}
-
-												for (auto& bloki : Bloki) {
-													GRA.draw(bloki.getBlok());
-												}
-
-												GRA.display();
-
-											} // koniec kodu gry
-
+											TRUDNOSC.close();										
+											goto gra;
 
 										case 1: //trudny
 											p1.velocity.x = 2.5;
 											p1.velocity.y = 2.5;
 											p1.ballVelocityX = 2.5;
 											p1.ballVelocityY = 2.5;
+											paletkaV = 3.5;
 											TRUDNOSC.close();
-											while (GRA.isOpen()) { // kod gry trudny
-												Event aevent;
-												while (GRA.pollEvent(aevent)) {
-													if (aevent.type == Event::KeyPressed) {
-														if (aevent.key.code == Keyboard::Escape) { //wyjscie z gry mozliwe tylko po wcisnieciu ESC
-															GRA.close();
-															goto poczatek;
-														}
-													}
-												}												
-												if (zegar.getElapsedTime().asMilliseconds() > 3.0f) { //klatkowanie 
-
-													p1.kolizjaSciany();
-													p1.przesun(p1.velocity.x, p1.velocity.y);
-
-													for (auto& bloki : Bloki) testKolizji(bloki, p1);
-
-													auto iterator = remove_if(begin(Bloki), end(Bloki), [](bloki& bloki) {return bloki.czyZniszczony(); }); //niszczenie bloków
-													Bloki.erase(iterator, end(Bloki));
-
-													if ((p1.left() > p2.getPosPaletka().x - 10) && (p1.right() < p2.getPosPaletka().x + 110) &&
-														(p1.bottom() > p2.getPosPaletka().y) && (p1.bottom() < p2.getPosPaletka().y + 10)) { //detekcja kolizji pilki i paletki
-														p1.moveUp();
-													}
-
-													if (aevent.type == sf::Event::KeyPressed) {//detekcja klawiszy			
-														if (aevent.key.code == sf::Keyboard::Left && p2.getPosPaletka().x > 0) {
-															p2.przesun(-3);
-														}
-														if (aevent.key.code == sf::Keyboard::Right && p2.getPosPaletka().x < 700) {
-															p2.przesun(3);
-														}
-													}
-
-													zegar.restart();
-													printf("x = %lf y=%lf \n\n", p1.getPosPilka().x, p1.getPosPilka().y);
-												}
-
-												GRA.clear(sf::Color::White);
-												GRA.draw(sprite);
-												GRA.draw(p1.getPilka());
-												GRA.draw(p2.getPaletka());
-												GRA.draw(p1.getTekst1());
-												if (p1.getZycia() == 0) {
-													p1.koniecGry();
-													GRA.draw(p1.getTekst2());
-												}
-
-												for (auto& bloki : Bloki) {
-													GRA.draw(bloki.getBlok());
-												}
-
-												GRA.display();
-
-											} // koniec kodu gry
+											goto gra;
 										}
 									}
 								}
@@ -287,14 +179,21 @@ poczatek:
 						}
 					case 2:
 						MENU.close();//element wyjœcie
+						POMOC.close();
+						TRUDNOSC.close();
+						GRA.close();
 						break;
 					}
+					break;
 
 				}
 				break;
 
 			case sf::Event::Closed:
 				MENU.close();
+				POMOC.close();
+				TRUDNOSC.close();
+				GRA.close();
 				break;
 
 			}
@@ -305,5 +204,61 @@ poczatek:
 		MENU.display();
 
 	}
-	return 0;
+
+gra:
+	while (GRA.isOpen()) { // kod gry
+		Event aevent;
+		while (GRA.pollEvent(aevent)) {
+			if (aevent.type == Event::KeyPressed) {
+				if (aevent.key.code == Keyboard::Escape) { //wyjscie z gry mozliwe tylko po wcisnieciu ESC
+					GRA.close();
+					goto poczatek;
+				}
+			}
+		}
+		if (zegar.getElapsedTime().asMilliseconds() > 3.0f) { //klatkowanie 
+
+			p1.kolizjaSciany();
+			p1.przesun(p1.velocity.x, p1.velocity.y);
+
+			for (auto& bloki : Bloki) testKolizji(bloki, p1);
+
+			auto iterator = remove_if(begin(Bloki), end(Bloki), [](bloki& bloki) {return bloki.czyZniszczony(); }); //niszczenie bloków
+			Bloki.erase(iterator, end(Bloki));
+
+			if ((p1.left() > p2.getPosPaletka().x - 10) && (p1.right() < p2.getPosPaletka().x + 110) &&
+				(p1.bottom() > p2.getPosPaletka().y) && (p1.bottom() < p2.getPosPaletka().y + 10)) { //detekcja kolizji pilki i paletki
+				p1.moveUp();
+			}
+
+			if (aevent.type == sf::Event::KeyPressed) {//detekcja klawiszy			
+				if (aevent.key.code == sf::Keyboard::Left && p2.getPosPaletka().x > 0) {
+					p2.przesun(-paletkaV);
+				}
+				if (aevent.key.code == sf::Keyboard::Right && p2.getPosPaletka().x < 700) {
+					p2.przesun(paletkaV);
+				}
+			}
+
+			zegar.restart();
+			printf("x = %lf y=%lf \n\n", p1.getPosPilka().x, p1.getPosPilka().y);
+		}
+
+		GRA.clear(sf::Color::White);
+		GRA.draw(sprite);
+		GRA.draw(p1.getPilka());
+		GRA.draw(p2.getPaletka());
+		GRA.draw(p1.getTekst1());
+		if (p1.getZycia() == 0) {
+			p1.koniecGry();
+			GRA.draw(p1.getTekst2());
+		}
+
+		for (auto& bloki : Bloki) {
+			GRA.draw(bloki.getBlok());
+		}
+
+		GRA.display();
+
+	} // koniec kodu gry
 }
