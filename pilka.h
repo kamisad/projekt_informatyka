@@ -20,8 +20,8 @@ public:
 	sf::Text getTekst2() { return tekst2; }
 
 	sf::Vector2f velocity{ 1.5f, 1.5f };
-	const float ballVelocityX{ 1.5f };
-	const float ballVelocityY{ 1.5f };
+	float ballVelocityX{ 1.5f };
+	float ballVelocityY{ 1.5f };
 	void kolizjaSciany();
 
 	void moveUp();

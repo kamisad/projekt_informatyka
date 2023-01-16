@@ -70,7 +70,7 @@ pilka::pilka(float x_in, float y_in)
 	tekst2.setPosition(300, 400);
 	tekst2.setOutlineColor(sf::Color::Black);
 	tekst2.setOutlineThickness(10);
-	tekst2.setString("Game Over");
+	tekst2.setString("Game Over \n\nwcisnij ESC");
 	
 }
 

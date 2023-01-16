@@ -1,41 +1,34 @@
-#include "Menu.h"
+#include "Trudnosc.h"
 
-Menu::Menu(float width, float height) {
+Trudnosc::Trudnosc(float width, float height) {
 
 	czcionka.loadFromFile("arial.ttf");
 
 	tekst[0].setFont(czcionka);
 	tekst[0].setFillColor(sf::Color::Red);
-	tekst[0].setString("  Graj");
-	tekst[0].setPosition(width / 2 - 50, height / 4 );
+	tekst[0].setString("  latwy");
+	tekst[0].setPosition(width / 2 - 55, height / 4);
 	tekst[0].setOutlineColor(sf::Color::Black);
 	tekst[0].setOutlineThickness(2);
 
 	tekst[1].setFont(czcionka);
 	tekst[1].setFillColor(sf::Color::White);
-	tekst[1].setString("Pomoc");
-	tekst[1].setPosition(width / 2 - 50, height * 2/ 4);
+	tekst[1].setString("trudny");
+	tekst[1].setPosition(width / 2 - 40, height * 2 / 4);
 	tekst[1].setOutlineColor(sf::Color::Black);
 	tekst[1].setOutlineThickness(2);
-
-	tekst[2].setFont(czcionka);
-	tekst[2].setFillColor(sf::Color::White);
-	tekst[2].setString(" wyjdz");
-	tekst[2].setPosition(width / 2 - 50, height * 3/ 4);
-	tekst[2].setOutlineColor(sf::Color::Black);
-	tekst[2].setOutlineThickness(2);
 
 	wybranyElement = 0;
 
 }
 
-void Menu::draw(sf::RenderWindow& window) {
-	for (int i = 0; i < 3; i++) {
+void Trudnosc::draw(sf::RenderWindow& window) {
+	for (int i = 0; i < 2; i++) {
 		window.draw(tekst[i]);
 	}
 }
 
-void Menu::MoveUp() {
+void Trudnosc::MoveUp() {
 	if (wybranyElement - 1 >= 0) {
 		tekst[wybranyElement].setFillColor(sf::Color::White);
 		wybranyElement--;
@@ -43,8 +36,8 @@ void Menu::MoveUp() {
 	}
 }
 
-void Menu::MoveDown() {
-	if (wybranyElement + 1 < 3) {
+void Trudnosc::MoveDown() {
+	if (wybranyElement + 1 < 2) {
 		tekst[wybranyElement].setFillColor(sf::Color::White);
 		wybranyElement++;
 		tekst[wybranyElement].setFillColor(sf::Color::Red);
