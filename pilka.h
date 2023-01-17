@@ -39,4 +39,5 @@ public:
 
 	void koniecGry();
 	int getZycia() { return zycia; }
+	int getPunkty() { return punkty; }
 };

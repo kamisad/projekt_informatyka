@@ -8,6 +8,8 @@
 #include <vector>
 #include <stdlib.h>
 #include <stdio.h>
+#include <fstream>
+#define _CRT_SECURE_NO_WARNINGS
 using namespace sf;
 using namespace std;
 
@@ -45,7 +47,6 @@ void testKolizji(bloki& bloki, pilka& pilka) {
 int main()
 {
 poczatek:
-
 	sf::RenderWindow GRA(sf::VideoMode(800, 800), "GRA");
 	sf::RenderWindow POMOC(sf::VideoMode(800, 800), "POMOC");
 	sf::RenderWindow TRUDNOSC(sf::VideoMode(800, 800), "TRUDNOSC");
@@ -55,6 +56,8 @@ poczatek:
 	Menu menu(800,800);
 	Pomoc pomoc(800, 800);
 	Trudnosc trudnosc(800, 800);
+	fstream plik;
+
 
 	sf::Clock zegar;
 	Texture texture;
@@ -129,6 +132,7 @@ poczatek:
 										break;
 
 									case sf::Keyboard::Return: //wybierz element
+
 										switch (trudnosc.getWybranyElement())
 										{
 
@@ -154,9 +158,9 @@ poczatek:
 							trudnosc.draw(TRUDNOSC);
 							TRUDNOSC.display();
 						}
-					case 1:
+					case 1: //element pomoc
 
-						MENU.close();// element pomoc
+						MENU.close();
 						GRA.close();
 						TRUDNOSC.close();
 
@@ -175,14 +179,18 @@ poczatek:
 							POMOC.draw(sprite);
 							pomoc.draw(POMOC);
 							POMOC.display();
-
 						}
-					case 2:
-						MENU.close();//element wyjœcie
+					case 2://element wyjœcie
+						MENU.close();
 						POMOC.close();
 						TRUDNOSC.close();
 						GRA.close();
 						break;
+					case 3:
+						plik.open("rekord.txt", std::ios::out); //reset punktow
+						plik << 0 << endl;
+						plik.close();
+						goto poczatek;
 					}
 					break;
 
@@ -212,6 +220,18 @@ gra:
 			if (aevent.type == Event::KeyPressed) {
 				if (aevent.key.code == Keyboard::Escape) { //wyjscie z gry mozliwe tylko po wcisnieciu ESC
 					GRA.close();
+
+					plik.open("rekord.txt", std::ios::in); //przypisanie rekordu do pliku
+					int poprzedniePunkty = 0;
+					plik >> poprzedniePunkty;
+					plik.close();
+					int aktualnePunkty = p1.getPunkty();
+					if (aktualnePunkty > poprzedniePunkty) {
+						plik.open("rekord.txt", std::ios::out);
+						plik << aktualnePunkty << endl;
+						plik.close();
+					}
+									
 					goto poczatek;
 				}
 			}
@@ -249,16 +269,16 @@ gra:
 		GRA.draw(p1.getPilka());
 		GRA.draw(p2.getPaletka());
 		GRA.draw(p1.getTekst1());
-		if (p1.getZycia() == 0) {
+
+		if (p1.getZycia() == 0) { //koniec gry
 			p1.koniecGry();
 			GRA.draw(p1.getTekst2());
 		}
 
 		for (auto& bloki : Bloki) {
-			GRA.draw(bloki.getBlok());
+			GRA.draw(bloki.getBlok());	
 		}
 
 		GRA.display();
-
 	} // koniec kodu gry
 }

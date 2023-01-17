@@ -1,5 +1,6 @@
 #include <SFML/Graphics.hpp>
 #pragma once
+#include <fstream>
 
 class Menu {
 public:
@@ -9,9 +10,8 @@ public:
 		void MoveUp();
 		void MoveDown();
 		int getWybranyElement() { return wybranyElement; }
-
 private:
 	int wybranyElement;
 	sf::Font czcionka;
-	sf::Text tekst[3];
+	sf::Text tekst[5];
 };

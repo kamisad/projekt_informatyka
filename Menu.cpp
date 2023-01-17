@@ -1,4 +1,6 @@
 #include "Menu.h"
+#include <sstream>
+
 
 Menu::Menu(float width, float height) {
 
@@ -25,12 +27,33 @@ Menu::Menu(float width, float height) {
 	tekst[2].setOutlineColor(sf::Color::Black);
 	tekst[2].setOutlineThickness(2);
 
+	tekst[3].setFont(czcionka);
+	tekst[3].setCharacterSize(20);
+	tekst[3].setFillColor(sf::Color::White);
+	tekst[3].setString("resetuj rekord");
+	tekst[3].setPosition(width / 2 - 70, 750);
+	tekst[3].setOutlineColor(sf::Color::Black);
+	tekst[3].setOutlineThickness(2);
+
+	std::fstream plik;
+	plik.open("rekord.txt", std::ios::in);
+	int rekord;
+	plik >> rekord;
+	tekst[4].setFont(czcionka);
+	tekst[4].setFillColor(sf::Color::White);
+	std::stringstream ss;
+	ss << "rekord: " << rekord;
+	tekst[4].setString(ss.str().c_str());
+	tekst[4].setPosition(600, 700);
+	tekst[4].setOutlineColor(sf::Color::Black);
+	tekst[4].setOutlineThickness(2);
+
 	wybranyElement = 0;
 
 }
 
 void Menu::draw(sf::RenderWindow& window) {
-	for (int i = 0; i < 3; i++) {
+	for (int i = 0; i < 5; i++) {
 		window.draw(tekst[i]);
 	}
 }
@@ -44,7 +67,7 @@ void Menu::MoveUp() {
 }
 
 void Menu::MoveDown() {
-	if (wybranyElement + 1 < 3) {
+	if (wybranyElement + 1 < 4) {
 		tekst[wybranyElement].setFillColor(sf::Color::White);
 		wybranyElement++;
 		tekst[wybranyElement].setFillColor(sf::Color::Red);
